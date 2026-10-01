@@ -1,71 +1,106 @@
 # Data Sources and Corpus Audit
 
-## Purpose
+## Purpose and audit status
 
-This document will define and audit the PoliScope v1 corpus before large-scale ingestion begins.
+This audit supports [issue #1](https://github.com/swampyaepaing/poliscope-ai/issues/1), which was open and assigned to `swampyaepaing` when checked on **2026-10-01**. It recommends a bounded first corpus of official EU AI-policy discourse before ingestion is implemented.
 
-## Candidate source families
+**Recommendation:** include Commission formal policy documents and implementation guidance; Parliament adopted texts and final committee reports/opinions; Council adopted conclusions and public negotiating positions; joint legislation from EUR-Lex once; and a separately labelled selection of substantive institutional press releases. Defer debates, individual speeches, questions, amendment series and internal negotiation drafts.
 
-1. European Commission
-2. European Parliament
-3. Council of the European Union
+This is a source-family and representative-document audit, not a complete inventory or a tested acquisition pipeline. Official documentation, official indexed records and directly readable samples support the comparison below. Metadata quality and ingestion difficulty are audit judgements, not measured performance. No document counts, annual completeness or API throughput are claimed.
 
-Only official/primary institutional material is in scope for the first corpus version.
+## Recommended scope for v1
 
-## Candidate document types
+- **Dates:** 2019-01-01 through 2026-10-01, inclusive, as the proposed initial freeze. The overall research window remains 2019–2026, but October–December 2026 cannot yet be represented. Record 2026 as a partial year; extend only through a separately dated corpus release.
+- **Language:** English full text for v1. Record unavailable English versions as coverage gaps, not evidence that the document does not exist. Do not silently translate multilingual or other-language records.
+- **Topic:** substantive AI governance, regulation, rights, industrial strategy or implementation. Include related digital-policy documents only when a meaningful section addresses AI policy; retain the whole document and identify that section. A passing mention of AI is insufficient.
+- **Provenance:** distinguish publisher/host from author and institutional authority. The Council of the EU and European Council share a website but are separate institutions. European Council conclusions, national delegations, external experts and other EU bodies are outside the three-institution v1 scope unless an explicitly labelled exception is approved in a later corpus decision.
+- **Dates and status:** select by the document's official issue/adoption date, recording publication and event dates separately. A later web update must not move an older text into a newer year. Where the original date is missing, review rather than infer it from an upload timestamp.
+- **Historical availability:** this is a retrospective corpus available at the freeze, not proof of what was publicly accessible at each historical moment. Preserve known release dates and flag unknown first-public dates.
 
-- legislative proposals
-- regulations / official legal texts
-- communications
-- policy strategies
-- committee or parliamentary material
-- speeches and official statements
-- press releases when substantively relevant
-- implementation guidance
+## Structured source comparison
 
-## Proposed temporal scope
+**Include** means the specified types enter the recommended v1 subject to the scope rules and recoverable English text. **Review** means no automatic inclusion. **Defer** means excluded from v1, not inherently unsuitable for later research. Difficulty estimates include discovery, provenance and extraction.
 
-Approximately 2019–2026.
+| Source family and document types | Availability relevant to 2019–2026 | Identifiers | Formats and full-text access | Search / acquisition method | Metadata quality; likely difficulty | Duplication / versioning risks | v1 status |
+|---|---|---|---|---|---|---|---|
+| **Commission formal documents:** COM proposals, communications, white papers, strategies; associated SWD impact assessments and executive summaries | Official register offers COM and SWD categories; EUR-Lex has relevant historical records [S1–S4]. Samples establish earlier-period availability, not every year or every attachment. | COM/SWD number, year and final/version marker; CELEX where assigned; procedure reference as a relation, not a unique document key. | HTML and PDF through EUR-Lex where supplied; CELLAR may provide structured manifestations. XML availability must be checked per document. Register records may provide only metadata or access-request information. | Discover in EUR-Lex and Commission register; follow procedure links; download actual English manifestations. CELLAR REST/SPARQL is the preferred documented machine route; registered EUR-Lex SOAP is an alternative [S5–S6]. | **High** for formal bibliographic records; **medium** effort for annexes, multipart SWDs and identifier reconciliation. | Register, EUR-Lex, DG pages and Council circulation copies may represent the same work. Proposal and adopted act are distinct stages. SWD summary and full assessment are distinct linked documents. | **Include** substantive formal texts and their substantive annexes; SWDs directly supporting included AI initiatives. |
+| **Commission implementation publications:** adopted guidelines and formal implementation communications on AI | DG CNECT library provides downloadable GPAI guidelines and approval communication, and prohibited-practice guidance [S7–S8]. Later material must be checked against the freeze. | C/COM reference if printed; otherwise official page/download identifier plus title, issue date and version. Never manufacture a CELEX ID. | HTML landing pages; downloadable PDFs and language versions. Landing-page description is not the full guidance. No uniform full-text XML established here. | Search official digital-strategy library, resolve attachments, retain issuing text and approval/status information. No general library API verified. | **Medium–high** depending on attachment; **medium** effort for authorship, legal status and revision checks. | Draft and adopted guidance, approval communication and attached guidelines can be confused. FAQs and service-desk mirrors may repeat text or change in place. | **Include** final Commission-issued guidance and communications. **Review** mutable FAQs and undated pages. |
+| **Commission press and speeches:** Press Corner IP releases, QANDA, SPEECH, STATEMENT; substantive DG news | Directly readable 2021 Press Corner release demonstrates policy text and dated provenance [S9]. Family-wide annual completeness is unverified. | Official Press Corner reference, e.g. IP/21/1682; canonical URL for DG news without an official reference. | HTML pages and printable PDF where offered; PDF inspected for the sample. A URL containing /api/ is not evidence of a supported search API. | Official Press Corner/site search and direct downloads. Broad scraping or an undocumented API is not a validated acquisition method. | **Medium**; **low–medium** for selected releases, higher for speaker/event disambiguation. | Same release across formats/languages and DG mirrors; quotations are attributed speakers' words. Press text repeats formal documents but is a separate discourse genre. | **Include** substantive press releases as a labelled supplement. **Defer** speeches/statements and Q&A collections. |
+| **Parliament adopted texts:** legislative resolutions/positions and non-legislative AI resolutions | A 2019 term-8 resolution is readable; 2024 adopted-text catalogue supplies document-level records [S10–S11]. Cover **terms 8, 9 and 10**, not only term 9. API historical completeness remains untested. | P8/P9/P10_TA(year)number; DOCEO document ID; ELI-EP URI where supplied; procedure relation. | DOCEO HTML/PDF where accessible; catalogue lists PDF and DOCX manifestations. JSON-LD/Atom API responses describe records and links, not necessarily full text [S12]. | Adopted-text API/catalogue for metadata and links; plenary/DOCEO search and OEIL for historical cross-checks; follow English manifestation links. | **High** structured records; **medium** effort for legacy mapping and corrigenda. | DOCEO, open-data distribution and OJ/EUR-Lex mirrors; original, corrected and final positions. An adopted resolution is not automatically enacted law. | **Include** adopted AI-related texts, with procedure and legal-status labels. |
+| **Parliament committee material:** final reports and opinions | Official procedure gateway and committee catalogue link AI Act material, including a provisional agreement [S13–S14]. Catalogue year must not substitute for document date: a 2025-labelled result exposes a 2024 document [S14]. | A8/A9/A10 report reference; PE number plus version for committee texts; committee document/ELI-EP ID if available. | HTML/PDF for plenary reports where offered; committee catalogue exposes PDF/DOCX attachments. No universal text XML verified. | Committee/plenary catalogue/API, OEIL documentation gateway and linked official files. Validate report/opinion status in the document. | **High** for procedure links; **medium** for committee roles/status; **medium–high** extraction effort for amendment tables. | Draft report, adopted committee report, opinions, provisional agreement and plenary amendments differ. Final report may embed opinions already published separately. | **Include** final committee reports and final opinions. **Review** provisional agreements; **defer** draft reports and individual amendment series. |
+| **Parliament proceedings and individual interventions:** CRE debates, plenary speeches, questions/answers, roll-call votes | Official release notes document speech API development/release [S15]; this does not establish complete historical English transcripts. | CRE sitting/item IDs, speech ID, question/answer ID, MEP ID and event relation as applicable. | HTML transcripts and other linked manifestations; API metadata does not imply an English transcript. Video is not recoverable text without another workflow. | Official proceedings search and relevant APIs; acquisition/segmentation has not been validated. | **Medium–high** speaker metadata where supplied; **high** effort for multilingual speech segmentation and attribution. | Question versus answer authors differ; an MEP's view is not Parliament's adopted position. Whole sitting and individual speech overlap. | **Defer** all these types in v1. |
+| **Council public register:** adopted conclusions, general approaches/negotiating mandates and formal Council positions | Register explicitly covers preparatory and meeting documents from 1999 onward. Some records require an access request; language coverage varies [S16]. Readable AI Act general-approach PDF supplies a concrete sample [S17]. | Full Council reference: category, number, year, INIT/REV/COR/ADD variant; interinstitutional procedure reference separately. | Register metadata/HTML interface; full-text PDF links for public records. Sample is text-extractable; general full-text XML not established. | Register search by subject/date/procedure; use actual linked PDF URLs. Council open-data documentation describes register metadata, not a complete full-text API [S18]. | **High** formal references and procedural metadata, **medium** author/status interpretation; **medium–high** PDF and revision handling. | Commission proposal circulated as Council document; presidency drafts are not adopted Council positions. INIT/REV/COR/ADD cannot be dropped from the key. Access visibility can change. | **Include** adopted Council conclusions and public formal negotiating/legislative positions. **Review** partial/redacted records; **defer** working-party/presidency draft series and delegation statements. |
+| **Council press releases and meeting outcomes:** substantive policy announcements | Dated 2022 release and meeting page identify general-approach event and link source documents [S19–S20]. Current press pages are needed for this period; register's historic press section is not the 2019–2026 archive. | Canonical dated URL; official release identifier only when supplied; meeting/date relation. | Readable HTML; printable PDF sometimes supplied [S19]. No supported comprehensive press API verified. | Official news search and relevant meeting pages; curated release list and direct downloads. Meeting pages serve as discovery metadata. | **Medium–high** dates/event links; **low–medium** for selected releases. | European Council and Council press coexist. Meeting outcome, press release and policy timeline overlap. Last-review date differs from event date. | **Include** substantive Council-of-EU press releases as supplement. **Exclude** navigational meeting pages/timelines as independent evidence documents. |
+| **Joint legislation via EUR-Lex/OJ:** AI Act and directly AI-related amending, delegated or implementing acts | Official AI Act record identifies CELEX 32024R1689 and OJ publication on 2024-07-12 [S21]. Any later acts must actually be published by the freeze; no blanket 2026 inventory claimed. | CELEX; ELI URI; OJ reference; amendment/corrigendum relation and version date. | HTML/PDF and CELLAR manifestations as available; retrieve actual format list rather than assume XML for every work. | EUR-Lex search/procedure records and CELLAR downloads. Prefer OJ text for enacted legislation. | **High** bibliographic/relationship metadata; **low–medium** acquisition, **medium** legal version handling. | Joint EP/Council act must not be counted twice. Original, corrigenda, amendments and consolidated text are not interchangeable [S22]. | **Include once** as joint legislation; include separately identified relevant later acts/corrigenda. **Defer** consolidated snapshots as independent discourse documents. |
+| **Cross-institution discovery layers:** OEIL, registers, CELLAR metadata, topic hubs | Helpful for finding documents and connecting procedural stages [S5, S13, S16]. Records do not prove that the underlying full text is accessible. | Procedure IDs and source-record URIs; preserve all document-level IDs. | HTML/metadata, RDF/JSON-LD or linked downloads depending on service. | Use for discovery, linkage and coverage checking only. | Usually **high** procedural metadata; **medium** reconciliation work. | Institutional summaries can repeat the primary text; procedure is a many-document container. | **Include as provenance metadata**, not as additional policy-text documents. |
 
-The exact start/end dates will be fixed after source audit.
+## Evidence register and inspection limits
 
-## Audit fields
+All references below are official institutional sources, checked on **2026-10-01**. “Indexed” means the official page's search-index extract was available but the page body was blank or blocked in this audit. It is weaker evidence than a directly readable document. Access failures are observations about this retrieval session, not proof of a permanent barrier or missing document.
 
-For every source family record:
+| Ref | Official evidence and URL | What was established |
+|---|---|---|
+| S1 | [Commission document register search](https://ec.europa.eu/transparency/documents-register/search) | Indexed COM/SWD categories; direct page returned no readable body. |
+| S2 | [COM(2019)168, Building trust in human-centric AI](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52019DC0168) | Indexed official CELEX record/text; direct English PDF retrieval hit a JavaScript verification page. |
+| S3 | [COM(2020)65, White Paper on AI](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52020DC0065) | Official record identified through discovery; direct HTML/PDF blocked. Treat as a seed requiring full-text validation, not a successful download. |
+| S4 | [COM(2021)206, AI Act proposal](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0206) | Indexed proposal and CELEX; also corroborated by official procedure gateway S13. Direct PDF blocked. |
+| S5 | [Publications Office: CELLAR data](https://op.europa.eu/en/web/cellar/cellar-data) | Readable documentation: REST publication access, SPARQL metadata, update feeds, persistent IDs and work/language/format hierarchy. |
+| S6 | [EUR-Lex webservice help](https://eur-lex.europa.eu/content/help/data-reuse/webservice.html?locale=en) | Indexed official help identifies SOAP and registration requirement; direct page blocked. No registered request performed. |
+| S7 | [Commission GPAI guidelines](https://digital-strategy.ec.europa.eu/en/library/guidelines-scope-obligations-providers-general-purpose-ai-models-under-ai-act) | Readable landing page and download links; distinguishes guidelines and approval communication. Attachment extraction not tested. |
+| S8 | [Commission prohibited-practice guidelines](https://digital-strategy.ec.europa.eu/en/library/commission-publishes-guidelines-prohibited-artificial-intelligence-ai-practices-defined-ai-act) | Indexed official library entry identifies guideline/approval files; exact final version must be verified. |
+| S9 | [Commission Press Corner IP/21/1682 PDF](https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_21_1682/IP_21_1682_EN.pdf) | Readable four-page press release dated 2021-04-21. |
+| S10 | [P8_TA(2019)0081](https://www.europarl.europa.eu/doceo/document/TA-8-2019-0081_EN.pdf) | Readable 27-page resolution of 2019-02-12 on industrial AI/robotics policy; term 8 is necessary for 2019 coverage. |
+| S11 | [EP adopted texts, 2024 catalogue](https://data.europarl.europa.eu/en/datasets/texts-adopted-by-the-european-parliament-year2024/0020) | Indexed fields include date, reference, language, PDF/DOCX, procedure and ELI-EP URI; direct body unreadable. |
+| S12 | [EP official API documentation](https://data.europarl.europa.eu/sl/developer-corner/opendata-api) | Official indexed documentation exposes API v2 and adopted-text endpoint/JSON-LD. No live API response or pagination test performed. |
+| S13 | [OEIL AI Act documentation gateway](https://oeil.europarl.europa.eu/oeil/en/procedure-file/pdf?reference=2021%2F0106%28COD%29&section=DOCUMENTATION_GATEWAY) | Indexed official gateway links Commission proposal and SWDs to procedure 2021/0106(COD); discovery evidence, not primary policy full text. |
+| S14 | [EP committee-document catalogue](https://data.europarl.europa.eu/en/datasets/committee-documents-of-the-european-parliament-year2025) | Indexed provisional-agreement record CJ40-AG-758862 has date 2024-02-02, committee/author metadata and PDF/DOCX links despite catalogue year label. |
+| S15 | [EP portal release notes](https://data.europarl.europa.eu/release-notes) | Readable API/model changes, including API v2 in 2024 and official speech API release in February 2025. Release dates do not establish historical corpus coverage. |
+| S16 | [Council public register](https://www.consilium.europa.eu/en/documents/public-register/) | Readable scope, language variability and access-request caveat. |
+| S17 | [Council ST-14954-2022-INIT](https://data.consilium.europa.eu/doc/document/ST-14954-2022-INIT/en/pdf) | Readable 217-page PDF dated 2022-11-25, procedure 2021/0106(COD), general-approach text. LIMITE marking remains visible even though file is publicly retrievable; record marking and observed access separately. |
+| S18 | [Council: understanding open-data datasets](https://www.consilium.europa.eu/media/29364/understanding-open-data-datasets.pdf) | Readable older documentation of register metadata. Current endpoint operation, completeness and bulk-download support were not verified; do not base v1 on an assumed Council API. |
+| S19 | [Council general-approach release, 2022-12-06](https://www.consilium.europa.eu/en/press/press-releases/2022/12/06/artificial-intelligence-act-council-calls-for-promoting-safe-ai-that-respects-fundamental-rights/) | Readable release, Council institution label and linked general approach; last-review date differs from publication date. |
+| S20 | [Telecommunications Council, 2022-12-06](https://www.consilium.europa.eu/en/meetings/tte/2022/12/06/) | Official indexed meeting outcome confirms agreement event, distinct from S17 document date. |
+| S21 | [AI Act, official ELI/OJ record](https://eur-lex.europa.eu/eli/reg/2024/1689/oj) | Indexed official record identifies joint act, CELEX and OJ date; direct English retrieval blocked. |
+| S22 | [EUR-Lex consolidated texts](https://eur-lex.europa.eu/collection/eu-law/consleg.html) | Official indexed description distinguishes point-in-time consolidated versions. |
+| S23 | [Commission: GPAI Code of Practice authorship/status](https://digital-strategy.ec.europa.eu/en/faqs/navigating-ai-act) | Indexed official explanation attributes code drafting to independent experts through a multistakeholder process. Official hosting alone does not make it Commission-authored discourse. |
 
-| Field | Description |
+## v1 selection and acquisition decision
+
+The table's included types form the **formal core**, except press releases, which form a **communications supplement**. Label both strata explicitly; do not pool their frequencies as if genres and institutional publication practices were equivalent.
+
+| v1 component | Exact inclusion boundary | Planned acquisition without implementing ingestion |
+|---|---|---|
+| Commission formal core | AI proposals, communications, white papers/strategies; directly supporting SWD assessments/summaries; final Commission guidance/implementation communications | Curate a manifest from EUR-Lex/register and official DG library. Resolve COM/SWD/C references and English files. Prefer structured text/HTML when actually supplied; retain official PDFs and substantive annexes. |
+| Parliament formal core | Adopted AI resolutions and legislative positions; final committee reports/opinions | Search across terms 8–10; reconcile catalogue/API with OEIL and DOCEO. Fetch linked English manifestations; verify final status and identify corrections. |
+| Council formal core | Adopted Council-of-EU AI conclusions; public general approaches, negotiating mandates and formal legislative positions | Search register by AI topic and procedure, cross-check adoption against meeting/release evidence, and download linked public English PDFs. No access-request-only text enters the retrieval corpus. |
+| Joint legal core | AI Act plus directly AI-related enacted amendments, delegated/implementing acts and relevant corrigenda published by freeze | Discover through EUR-Lex/OJ and linked procedures; acquire once by CELEX/ELI, recording both co-legislators for joint acts. Commission-only acts retain Commission authorship. |
+| Communications supplement | Dated, substantive Commission, Parliament and Council-of-EU press releases announcing or explaining an included initiative, position or implementation measure | Curate via official press search and source links; save canonical HTML/PDF. Exclude event logistics and bare link announcements. Parliament press acquisition remains a manual official-news search route; its family was not separately API-audited. |
+
+Formal texts alone would underrepresent public framing; press releases help address that, but introduce genre and selection bias. Record a consistent rule: include all located qualifying releases for selected initiatives across all three institutions, rather than selecting only rhetorically striking passages. Report search routes and gaps per institution/year/type. Document volume is not political salience.
+
+**Excluded or deferred in v1:** individual speeches/statements, parliamentary debates/questions/votes, draft report and amendment series, presidency/working-party drafts, delegation positions, access-request-only documents, third-party material, purely navigational pages, general mutable FAQs, and consolidated snapshots as separate discourse records. Expert-authored texts hosted by the Commission, including HLEG outputs and the GPAI Code of Practice, are **review/outside automatic inclusion**: keep their links for context, and include a Commission endorsement/adoption communication if it independently meets the scope rules [S23].
+
+## Provenance, identity and version rules
+
+Retain the original audit fields: institution, document_type, title, publication_date, source_url, language, format, stable_id, full_text_access, metadata_quality, machine_access, inclusion_status and notes. Add the following to the future manifest specification:
+
+| Fields | Rule |
 |---|---|
-| institution | Publishing institution |
-| document_type | Communication, regulation, debate, speech, etc. |
-| title | Official title |
-| publication_date | Date published |
-| source_url | Canonical official URL |
-| language | Document language |
-| format | HTML, PDF, XML, etc. |
-| stable_id | Official identifier where available |
-| full_text_access | Yes / partial / no |
-| metadata_quality | High / medium / low |
-| machine_access | API / downloadable / scrape required |
-| inclusion_status | Include / exclude / review |
-| notes | Important limitations |
+| author_institution, publisher, speaker/committee, institutional_status | Separate host, author and authority: adopted position, proposal, guidance, press release, expert output or draft. Preserve joint authorship. |
+| document_date, adoption_date, event_date, first_public_date, updated_date, retrieved_at, cutoff_date | Keep dates separate and use null plus a note when unknown. S17 is dated November 25; the general-approach event is December 6. |
+| official_ids, procedure_id, canonical_work_id, language, version, part/annex_id | Namespace identifiers by source. A procedure ID groups documents; it is not a document ID. Preserve REV/COR/ADD and PE version markers. |
+| canonical_url, alternative_urls, downloaded_url, format, content_hash | One logical text per language/version; HTML, PDF and mirrors are manifestations. Store URLs and original bytes for reproducibility. A URL without a formal ID is a locator, not a guarantee of immutability. |
+| parent_document, supersedes, corrects, derived_from, related_documents | Link substantive annexes and separate stages. Preserve both proposal and final act. Do not silently overwrite an earlier text with a correction. |
+| full_text_access, access_marking, extraction_status, inclusion_status, exclusion_reason | Distinguish public/full, partial/redacted, metadata-only, request-required and retrieval-failed. Only recoverable substantive full text enters v1 retrieval; retain excluded-record metadata for coverage reporting. |
 
-## Inclusion criteria — provisional
+Deduplicate mirrors using official identifiers and corroborated content hashes, not title alone. Near-identical policy-stage texts remain separate with relations. Where a final report contains an independently included opinion, mark the embedded overlap so retrieval/evaluation does not count the same passage twice. Group related works and versions when splitting evaluation data to reduce leakage.
 
-A document should:
-- originate from an official EU institutional source;
-- materially concern AI policy, governance, regulation or implementation;
-- fall within the final temporal scope;
-- have recoverable text and adequate provenance.
+## Remaining uncertainty and next checks
 
-## Exclusion criteria — provisional
+1. **Coverage:** reconcile a manually reviewed manifest against each source's searches by year and type, including term-8 Parliament records and 2026 through the freeze. No claim of an exhaustive 2019–2026 corpus is supported yet.
+2. **Machine access:** test CELLAR resolution/manifestations, EP API current schema/pagination/historical dates and English links on a small curated sample in a later ingestion task. Use register/manual download fallbacks; Council's older open-data documentation is not an operational guarantee.
+3. **Retrieval barriers:** EUR-Lex and several DOCEO URLs returned JavaScript verification pages; EP catalogue/API documentation pages sometimes returned empty bodies. Do not interpret those as missing source material, and do not claim successful downloads for them.
+4. **Versions and status:** inspect actual guidance attachments, committee final texts, corrections and adoption records. Do not infer legal force from “official,” “final,” or a press announcement.
+5. **Reproducibility:** before any ingestion, freeze and review the document manifest, cutoff, English availability, exclusions and applicable reuse/attribution notices. Keep the raw-source provenance specification separate from extraction code.
 
-Exclude:
-- duplicate mirrors;
-- pages with no substantive policy content;
-- third-party summaries presented outside the official institutional source set;
-- documents without sufficient provenance;
-- material unrelated to the research domain.
-
-## Next task
-
-Conduct a source audit before implementing automated ingestion.
+This audit recommends the families and acquisition routes for v1. It does not implement ingestion, certify API operation, or establish corpus completeness.
