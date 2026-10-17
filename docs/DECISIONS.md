@@ -31,3 +31,15 @@ This file records consequential decisions so that implementation choices remain 
 **Decision:** Model providers should be wrapped behind a common interface.
 
 **Reason:** The project is intended to compare system architectures without coupling findings to one proprietary API.
+
+## ADR-006 — Prefer documented machine-access routes over web scraping
+
+**Decision:** Use EUR-Lex/Publications Office CELLAR as the primary machine-access backbone for formal EU publications and the European Parliament Open Data Portal for Parliament records. Use the Council public register through a controlled, provenance-preserving acquisition path when no equivalent documented full-text API is available.
+
+**Reason:** Stable identifiers, documented interfaces and reproducible retrieval are methodologically preferable to fragile scraping. An undocumented endpoint that happens to work is not considered a stable data source.
+
+## ADR-007 — Preserve document genre as an analytical variable
+
+**Decision:** Formal legislation/policy texts, committee or negotiating positions, and institutional press communications must be tagged as separate document genres. Communications material may supplement the corpus but must not be silently pooled with legal/policy documents in longitudinal framing analyses.
+
+**Reason:** Genre itself affects language, framing and rhetorical style. Mixing press releases with regulations or formal policy texts could create apparent temporal or institutional differences that are actually genre effects.
